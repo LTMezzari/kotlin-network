@@ -17,8 +17,10 @@ abstract class BaseNetworkPromise<T>(
     private val delegate: BaseNetworkPromise<T>.() -> Unit
 ): Callback<T> {
 
-    protected var successCallback: (BaseNetworkPromise<T>.(T?) -> Unit)? = null
-    protected var failureCallback: (BaseNetworkPromise<T>.(String?) -> Unit)? = null
+    var successCallback: (BaseNetworkPromise<T>.(T?) -> Unit)? = null
+        private set
+    var failureCallback: (BaseNetworkPromise<T>.(String?) -> Unit)? = null
+        private set
 
     var call: Call<T>? = null
     var throwable: Throwable? = null
@@ -52,6 +54,11 @@ abstract class BaseNetworkPromise<T>(
     override fun onFailure(call: Call<T>, t: Throwable) {
         this.call = call
         this.throwable = t
+        for (interceptor in Network.failureInterceptors) {
+            if (interceptor.onFailure(call, t, this)) {
+                return
+            }
+        }
     }
 
     @CallSuper

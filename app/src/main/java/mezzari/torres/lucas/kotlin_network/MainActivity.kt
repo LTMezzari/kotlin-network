@@ -9,10 +9,12 @@ import mezzari.torres.lucas.network.annotation.Route
 import mezzari.torres.lucas.network.source.Network
 import mezzari.torres.lucas.network.source.module.client.LogModule
 import mezzari.torres.lucas.network.source.module.retrofit.GsonConverterModule
+import mezzari.torres.lucas.network.source.promise.BaseNetworkPromise
 import mezzari.torres.lucas.network.source.promise.NetworkPromise
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
+import java.net.UnknownHostException
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -25,7 +27,8 @@ class MainActivity : AppCompatActivity() {
 
         Network.initialize(
             retrofitLevelModules = Collections.singletonList(GsonConverterModule()),
-            okHttpClientLevelModule = Collections.singletonList(LogModule())
+            okHttpClientLevelModule = Collections.singletonList(LogModule()),
+            failureInterceptors = listOf(ConnectionFailed())
         )
 
         btnSend.setOnClickListener {
@@ -82,4 +85,18 @@ class MainActivity : AppCompatActivity() {
         @SerializedName("gia")
         val gia: String
     )
+
+    class ConnectionFailed: Network.FailureInterceptor {
+        override fun <T> onFailure(
+            call: Call<T>,
+            t: Throwable,
+            promise: BaseNetworkPromise<T>
+        ): Boolean {
+            if (t is UnknownHostException) {
+                promise.failureCallback?.invoke(promise, "You are offline")
+                return true
+            }
+            return false
+        }
+    }
 }
