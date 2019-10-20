@@ -10,7 +10,7 @@ import retrofit2.Response
 open class NetworkPromise<T>(delegate: BaseNetworkPromise<T>.() -> Unit): BaseNetworkPromise<T>(delegate) {
     override fun onFailure(call: Call<T>, t: Throwable) {
         super.onFailure(call, t)
-        this.failureCallback?.invoke(this, if (call.isCanceled) null else t.message)
+        this.failureCallback?.invoke(this, t.message)
     }
 
     override fun onResponse(call: Call<T>, response: Response<T>) {

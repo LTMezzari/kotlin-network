@@ -3,7 +3,9 @@ package mezzari.torres.lucas.network.source
 import mezzari.torres.lucas.network.annotation.Route
 import mezzari.torres.lucas.network.source.auth.BaseAuth
 import mezzari.torres.lucas.network.source.auth.NoAuth
+import mezzari.torres.lucas.network.source.promise.BaseNetworkPromise
 import okhttp3.OkHttpClient
+import retrofit2.Call
 import retrofit2.Retrofit
 import kotlin.reflect.KClass
 
@@ -15,6 +17,10 @@ import kotlin.reflect.KClass
  **/
 object Network {
 
+    //This property will map and guard all retrofit instances
+    //Every base url will have a single retrofit instance
+    private val retrofitInstances: HashMap<String, Retrofit> = HashMap()
+
     //List of modules in retrofit level
     private var retrofitLevelModules: List<RetrofitLevelModule> = ArrayList()
     //List of modules in retrofit client level
@@ -22,9 +28,9 @@ object Network {
     //An instance that will deal with the authentication of the network
     internal var auth: BaseAuth = NoAuth()
 
-    //This property will map and guard all retrofit instances
-    //Every base url will have a single retrofit instance
-    private val retrofitInstances: HashMap<String, Retrofit> = HashMap()
+    //List of failure interceptors
+    var failureInterceptors: List<FailureInterceptor> = ArrayList()
+        private set
 
     /**
      * This method should be called in the onCreate of the Application
@@ -33,10 +39,12 @@ object Network {
     fun initialize(
         retrofitLevelModules: List<RetrofitLevelModule> = ArrayList(),
         okHttpClientLevelModule: List<OkHttpClientLevelModule> = ArrayList(),
+        failureInterceptors: List<FailureInterceptor> = ArrayList(),
         auth: BaseAuth = NoAuth()
     ) {
         this.retrofitLevelModules = retrofitLevelModules
         this.okHttpClientLevelModule = okHttpClientLevelModule
+        this.failureInterceptors = failureInterceptors
         this.auth = auth
     }
 
@@ -57,11 +65,11 @@ object Network {
         var baseUrl = url
         //If it is empty, get it from the annotation
         if (baseUrl.isEmpty()) {
-            //Get the Service Route annotation
-            val serviceRoute = dClass.annotations.find { it.annotationClass == Route::class } as? Route
-                ?: throw RuntimeException("The class should be annotated with ServiceRoute")
+            //Get the Route annotation
+            val route = dClass.annotations.find { it.annotationClass == Route::class } as? Route
+                ?: throw RuntimeException("The class should be annotated with Route")
             //Change the base url
-            baseUrl = serviceRoute.url
+            baseUrl = route.url
         }
 
         //Check if a retrofit instance for the given base url already exists
@@ -135,5 +143,25 @@ object Network {
          * Should be used to add attributes to the client
          */
         fun onClientBuilderCreated(okHttpClientBuilder: OkHttpClient.Builder)
+    }
+
+    /**
+     * Interface that will handle failures from calls
+     */
+    interface FailureInterceptor {
+        /**
+         * This method should be called from a
+         * [mezzari.torres.lucas.network.source.promise.BaseNetworkPromise] when a failure occurs
+         *
+         * @param call The call from where the exception was trowed
+         * @param t The exception trowed
+         * @param promise The promise that invoked the interceptor
+         * @return True if the promise should stop executing the interceptors
+         */
+        fun <T>onFailure(
+            call: Call<T>,
+            t: Throwable,
+            promise: BaseNetworkPromise<T>
+        ): Boolean
     }
 }
