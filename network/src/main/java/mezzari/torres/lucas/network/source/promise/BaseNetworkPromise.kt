@@ -54,11 +54,6 @@ abstract class BaseNetworkPromise<T>(
     override fun onFailure(call: Call<T>, t: Throwable) {
         this.call = call
         this.throwable = t
-        for (interceptor in Network.failureInterceptors) {
-            if (interceptor.onFailure(call, t, this)) {
-                return
-            }
-        }
     }
 
     @CallSuper
