@@ -1,5 +1,6 @@
 package mezzari.torres.lucas.network.source.promise
 
+import mezzari.torres.lucas.network.source.Network
 import retrofit2.Call
 import retrofit2.Response
 
@@ -10,6 +11,11 @@ import retrofit2.Response
 open class NetworkPromise<T>(delegate: BaseNetworkPromise<T>.() -> Unit): BaseNetworkPromise<T>(delegate) {
     override fun onFailure(call: Call<T>, t: Throwable) {
         super.onFailure(call, t)
+        for (interceptor in Network.failureInterceptors) {
+            if (interceptor.onFailure(call, t, this)) {
+                return
+            }
+        }
         this.failureCallback?.invoke(this, t.message)
     }
 
