@@ -21,6 +21,12 @@ open class NetworkPromise<T>(delegate: BaseNetworkPromise<T>.() -> Unit): BaseNe
 
     override fun onResponse(call: Call<T>, response: Response<T>) {
         super.onResponse(call, response)
+        for (interceptor in Network.failureInterceptors) {
+            if (interceptor.onResponse(call, response, this)) {
+                return
+            }
+        }
+
         if (response.isSuccessful) {
             this.successCallback?.invoke(this, response.body())
         } else if (!this.auth.isAuthenticated(response)) {

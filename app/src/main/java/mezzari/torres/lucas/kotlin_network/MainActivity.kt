@@ -12,6 +12,7 @@ import mezzari.torres.lucas.network.source.module.retrofit.GsonConverterModule
 import mezzari.torres.lucas.network.source.promise.BaseNetworkPromise
 import mezzari.torres.lucas.network.source.promise.NetworkPromise
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import java.net.UnknownHostException
@@ -96,6 +97,14 @@ class MainActivity : AppCompatActivity() {
                 promise.failureCallback?.invoke(promise, "You are offline")
                 return true
             }
+            return false
+        }
+
+        override fun <T> onResponse(
+            call: Call<T>,
+            response: Response<T>,
+            promise: BaseNetworkPromise<T>
+        ): Boolean {
             return false
         }
     }

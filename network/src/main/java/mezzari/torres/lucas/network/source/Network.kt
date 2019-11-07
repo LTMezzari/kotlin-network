@@ -6,6 +6,7 @@ import mezzari.torres.lucas.network.source.auth.NoAuth
 import mezzari.torres.lucas.network.source.promise.BaseNetworkPromise
 import okhttp3.OkHttpClient
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import kotlin.reflect.KClass
 
@@ -161,6 +162,21 @@ object Network {
         fun <T>onFailure(
             call: Call<T>,
             t: Throwable,
+            promise: BaseNetworkPromise<T>
+        ): Boolean
+
+        /**
+         * This method should be called from a
+         * [mezzari.torres.lucas.network.source.promise.BaseNetworkPromise] when a response occurs
+         *
+         * @param call The call from where the response was received
+         * @param response The response received
+         * @param promise The promise that invoked the interceptor
+         * @return True if the promise should stop executing the interceptors
+         */
+        fun <T>onResponse(
+            call: Call<T>,
+            response: Response<T>,
             promise: BaseNetworkPromise<T>
         ): Boolean
     }
