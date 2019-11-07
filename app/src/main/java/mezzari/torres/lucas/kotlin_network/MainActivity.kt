@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         Network.initialize(
             retrofitLevelModules = Collections.singletonList(GsonConverterModule()),
             okHttpClientLevelModule = Collections.singletonList(LogModule()),
-            failureInterceptors = listOf(ConnectionFailed())
+            responseInterceptors = listOf(ConnectionFailed())
         )
 
         btnSend.setOnClickListener {
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         val gia: String
     )
 
-    class ConnectionFailed: Network.FailureInterceptor {
+    class ConnectionFailed: Network.ResponseInterceptor {
         override fun <T> onFailure(
             call: Call<T>,
             t: Throwable,

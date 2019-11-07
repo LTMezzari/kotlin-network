@@ -30,7 +30,7 @@ object Network {
     internal var auth: BaseAuth = NoAuth()
 
     //List of failure interceptors
-    var failureInterceptors: List<FailureInterceptor> = ArrayList()
+    var responseInterceptors: List<ResponseInterceptor> = ArrayList()
         private set
 
     /**
@@ -40,12 +40,12 @@ object Network {
     fun initialize(
         retrofitLevelModules: List<RetrofitLevelModule> = ArrayList(),
         okHttpClientLevelModule: List<OkHttpClientLevelModule> = ArrayList(),
-        failureInterceptors: List<FailureInterceptor> = ArrayList(),
+        responseInterceptors: List<ResponseInterceptor> = ArrayList(),
         auth: BaseAuth = NoAuth()
     ) {
         this.retrofitLevelModules = retrofitLevelModules
         this.okHttpClientLevelModule = okHttpClientLevelModule
-        this.failureInterceptors = failureInterceptors
+        this.responseInterceptors = responseInterceptors
         this.auth = auth
     }
 
@@ -149,7 +149,7 @@ object Network {
     /**
      * Interface that will handle failures from calls
      */
-    interface FailureInterceptor {
+    interface ResponseInterceptor {
         /**
          * This method should be called from a
          * [mezzari.torres.lucas.network.source.promise.BaseNetworkPromise] when a failure occurs

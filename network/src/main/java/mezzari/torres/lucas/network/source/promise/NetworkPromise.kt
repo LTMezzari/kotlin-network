@@ -11,7 +11,7 @@ import retrofit2.Response
 open class NetworkPromise<T>(delegate: BaseNetworkPromise<T>.() -> Unit): BaseNetworkPromise<T>(delegate) {
     override fun onFailure(call: Call<T>, t: Throwable) {
         super.onFailure(call, t)
-        for (interceptor in Network.failureInterceptors) {
+        for (interceptor in Network.responseInterceptors) {
             if (interceptor.onFailure(call, t, this)) {
                 return
             }
@@ -21,7 +21,7 @@ open class NetworkPromise<T>(delegate: BaseNetworkPromise<T>.() -> Unit): BaseNe
 
     override fun onResponse(call: Call<T>, response: Response<T>) {
         super.onResponse(call, response)
-        for (interceptor in Network.failureInterceptors) {
+        for (interceptor in Network.responseInterceptors) {
             if (interceptor.onResponse(call, response, this)) {
                 return
             }
