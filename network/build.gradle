@@ -7,12 +7,12 @@ apply plugin: 'com.github.dcendents.android-maven'
 group='com.github.LTMezzari'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.0"
+    compileSdkVersion sdkVersion
+    buildToolsVersion toolsVersion
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion sdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -40,16 +40,24 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //Kotlin
+    implementation libraries.kotlin_jdk
+    implementation libraries.kotlin_reflect
 
-    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.0'
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.3.50"
+    //Android
+    implementation libraries.app_compat
+
+    //Tests
+    testImplementation libraries.junit
+    androidTestImplementation libraries.test_runner
+    androidTestImplementation libraries.expresso_core
+
+    //Retrofit
+    implementation libraries.retrofit
+    implementation libraries.retrofit_gson
+
+    //Logging Interceptor
+    implementation libraries.logging_interceptor
 }
 
 repositories {
