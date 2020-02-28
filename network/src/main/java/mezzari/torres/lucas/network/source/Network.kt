@@ -33,6 +33,10 @@ object Network {
     var responseInterceptors: List<ResponseInterceptor> = ArrayList()
         private set
 
+    //A base url variable to help unit tests
+    var baseUrl: String = ""
+        private set
+
     /**
      * This method should be called in the onCreate of the Application
      * It will receive the array of modules to initialize the network properties
@@ -41,19 +45,21 @@ object Network {
         retrofitLevelModules: List<RetrofitLevelModule> = ArrayList(),
         okHttpClientLevelModule: List<OkHttpClientLevelModule> = ArrayList(),
         responseInterceptors: List<ResponseInterceptor> = ArrayList(),
-        auth: BaseAuth = NoAuth()
+        auth: BaseAuth = NoAuth(),
+        baseUrl: String = ""
     ) {
         this.retrofitLevelModules = retrofitLevelModules
         this.okHttpClientLevelModule = okHttpClientLevelModule
         this.responseInterceptors = responseInterceptors
         this.auth = auth
+        this.baseUrl = baseUrl
     }
 
     /**
      * This method build a API to call the needed services
      * It will bring the class already casted
      */
-    inline fun <reified T> build(url: String = ""): T {
+    inline fun <reified T> build(url: String = baseUrl): T {
         return build(T::class, url)
     }
 
