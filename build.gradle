@@ -7,7 +7,8 @@ buildscript {
 
         //Common Versions
         kotlinVersion = "1.3.61"
-        retrofitVersion = "2.7.1"
+        retrofitVersion = "2.7.2"
+        okhttpVersion = "4.4.0"
 
         libraries = [
                 //Gradle
@@ -21,20 +22,22 @@ buildscript {
 
                 //Android
                 app_compat: 'androidx.appcompat:appcompat:1.1.0',
-                androidx_core: 'androidx.core:core-ktx:1.1.0',
+                androidx_core: 'androidx.core:core-ktx:1.2.0',
                 constraint_layout: 'androidx.constraintlayout:constraintlayout:1.1.3',
 
                 //Tests
                 junit: 'junit:junit:4.13',
                 test_runner: 'androidx.test:runner:1.2.0',
                 expresso_core: 'androidx.test.espresso:espresso-core:3.2.0',
+                arch_core: 'android.arch.core:core-testing:1.1.1',
 
                 //Retrofit
                 retrofit: "com.squareup.retrofit2:retrofit:$retrofitVersion",
                 retrofit_gson: "com.squareup.retrofit2:converter-gson:$retrofitVersion",
 
                 //Logging Interceptor
-                logging_interceptor: 'com.squareup.okhttp3:logging-interceptor:4.2.2'
+                logging_interceptor: "com.squareup.okhttp3:logging-interceptor:$okhttpVersion",
+                mock_server: "com.squareup.okhttp3:mockwebserver:$okhttpVersion",
         ]
     }
 

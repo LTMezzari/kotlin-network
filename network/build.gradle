@@ -27,6 +27,10 @@ android {
         }
     }
 
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -51,6 +55,7 @@ dependencies {
     testImplementation libraries.junit
     androidTestImplementation libraries.test_runner
     androidTestImplementation libraries.expresso_core
+    testImplementation libraries.arch_core
 
     //Retrofit
     implementation libraries.retrofit
@@ -58,6 +63,7 @@ dependencies {
 
     //Logging Interceptor
     implementation libraries.logging_interceptor
+    testImplementation libraries.mock_server
 }
 
 repositories {
