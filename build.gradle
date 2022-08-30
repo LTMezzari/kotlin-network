@@ -1,14 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        sdkVersion = 29
+        sdkVersion = 32
         toolsVersion = "29.0.2"
 
 
         //Common Versions
-        kotlinVersion = "1.3.72"
+        kotlinVersion = "1.6.10"
         retrofitVersion = "2.9.0"
-        okhttpVersion = "4.8.0"
+        okhttpVersion = "4.10.0"
 
         libraries = [
                 //Gradle
@@ -21,14 +21,14 @@ buildscript {
                 kotlin_reflect: "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
 
                 //Android
-                app_compat: 'androidx.appcompat:appcompat:1.1.0',
-                androidx_core: 'androidx.core:core-ktx:1.3.1',
-                constraint_layout: 'androidx.constraintlayout:constraintlayout:1.1.3',
+                app_compat: 'androidx.appcompat:appcompat:1.5.0',
+                androidx_core: 'androidx.core:core-ktx:1.8.0',
+                constraint_layout: 'androidx.constraintlayout:constraintlayout:2.1.4',
 
                 //Tests
-                junit: 'junit:junit:4.13',
-                test_runner: 'androidx.test:runner:1.2.0',
-                expresso_core: 'androidx.test.espresso:espresso-core:3.2.0',
+                junit: 'junit:junit:4.13.2',
+                test_runner: 'androidx.test:runner:1.4.0',
+                expresso_core: 'androidx.test.espresso:espresso-core:3.4.0',
                 arch_core: 'android.arch.core:core-testing:1.1.1',
 
                 //Retrofit
@@ -43,8 +43,7 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
-        
+        mavenCentral()
     }
 
     dependencies {
@@ -57,8 +56,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
-        
+        mavenCentral()
     }
 }
 
