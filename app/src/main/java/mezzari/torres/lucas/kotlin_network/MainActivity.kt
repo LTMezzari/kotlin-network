@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.synthetic.main.activity_main.*
+import mezzari.torres.lucas.kotlin_network.databinding.ActivityMainBinding
 import mezzari.torres.lucas.network.annotation.Route
 import mezzari.torres.lucas.network.source.Network
 import mezzari.torres.lucas.network.source.module.client.LogModule
@@ -20,11 +20,14 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+
     private val service: ViacepService  = ViacepService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         Network.initialize(
             retrofitLevelModules = Collections.singletonList(GsonConverterModule()),
@@ -32,8 +35,8 @@ class MainActivity : AppCompatActivity() {
             responseInterceptors = listOf(ConnectionFailed())
         )
 
-        btnSend.setOnClickListener {
-            val cep = etCep.text.toString()
+        binding.btnSend.setOnClickListener {
+            val cep = binding.etCep.text.toString()
             if (cep.isNotEmpty()) {
                 service.getAddress(cep).then { address ->
                     address ?: return@then
