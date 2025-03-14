@@ -1,0 +1,37 @@
+[versions]
+gradleVersion = "8.9.0"
+okhttpVersion = "4.12.0"
+coreKtx = "1.15.0"
+kotlinVersion = "2.1.10"
+retrofitVersion = "2.11.0"
+
+[libraries]
+#Kotlin
+kotlin-jdk = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk7", version.ref = "kotlinVersion" }
+kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlinVersion" }
+
+#Android
+app-compat = { group = "androidx.appcompat", name = "appcompat", version = "1.7.0" }
+android-core = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+material = { module = "com.google.android.material:material", version = "1.12.0" }
+
+#Tests
+junit = { group = "junit", name = "junit", version = "4.13.2" }
+junit-ext = { group = "androidx.test.ext", name = "junit", version = "1.2.1" }
+expresso = { group = "androidx.test.espresso", name = "espresso-core", version = "3.6.1" }
+
+#Retrofit
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofitVersion" }
+retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofitVersion" }
+
+#Okhttp
+logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttpVersion" }
+mock-server = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttpVersion" }
+
+[bundles]
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "gradleVersion" }
+android-library = { id = "com.android.library", version.ref = "gradleVersion" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }
+maven = { id = "maven-publish" }
